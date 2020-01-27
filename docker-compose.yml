@@ -19,7 +19,7 @@ services:
     image: postgres
     container_name: bq-api-node_db
     ports:
-      - "5432:5432"
+      - "5430:5430"
     volumes:
       - database:/var/lib/postgresql/data
     networks:
