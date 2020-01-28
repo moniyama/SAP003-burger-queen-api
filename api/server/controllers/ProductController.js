@@ -56,28 +56,28 @@ class ProductController {
   //   }
   // }
 
-  // static async getAuthor(req, res) {
-  //   const { id } = req.params
+  static async getProduct(req, res) {
+    const { productid } = req.params
 
-  //   if (!Number(id)) {
-  //     util.setError(400, 'Please input a valid numeric value')
-  //     return util.send(res)
-  //   }
+    if (!Number(productid)) {
+      util.setError(400, 'Please input a valid numeric value')
+      return util.send(res)
+    } 
 
-  //   try {
-  //     const theAuthor = await ProductServices.getAuthor(id)
+    try {
+      const theProduct = await ProductServices.getProduct(productid)
 
-  //     if (!theAuthor) {
-  //       util.setError(404, `Cannot find Author with the id ${id}`)
-  //     } else {
-  //       util.setSuccess(200, 'Found Author', theAuthor)
-  //     }
-  //     return util.send(res)
-  //   } catch (error) {
-  //     util.setError(404, error)
-  //     return util.send(res)
-  //   }
-  // }
+      if (!theProduct) {
+        util.setError(404, `Cannot find Product with the id ${productid}`)
+      } else {
+        util.setSuccess(200, 'Found Product', theProduct)
+      }
+      return util.send(res)
+    } catch (error) {
+      util.setError(404, error)
+      return util.send(res)
+    }
+  }
 
   // static async deleteAuthor(req, res) {
   //   const { id } = req.params

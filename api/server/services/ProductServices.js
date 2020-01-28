@@ -34,17 +34,17 @@ class ProductsService {
   //   }
   // }
 
-  // static async getAuthor(id) {
-  //   try {
-  //     const theAuthor = await database.Author.findOne({
-  //       where: { id: Number(id) }
-  //     })
+  static async getProduct(id) {
+    try {
+      const theProduct = await database.Menu.findOne({
+        where: { id: Number(id) }
+      })
 
-  //     return theAuthor
-  //   } catch (error) {
-  //     throw error
-  //   }
-  // }
+      return theProduct
+    } catch (error) {
+      throw error
+    }
+  }
 
   // static async deleteAuthor(id) {
   //   try {
