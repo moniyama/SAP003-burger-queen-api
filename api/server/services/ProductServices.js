@@ -9,13 +9,13 @@ class ProductsService {
     }
   }
 
-  // static async addProduct(newProduct) {
-  //   try {
-  //     return await database.Menu.create(newProduct)
-  //   } catch (error) {
-  //     throw error
-  //   }
-  // }
+  static async addProduct(newProduct) {
+    try {
+      return await database.Menu.create(newProduct)
+    } catch (error) {
+      throw error
+    }
+  }
 
   // static async updateAuthor(id, updateAuthor) {
   //   try {

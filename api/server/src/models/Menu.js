@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const Menu = sequelize.define('Menu', {
     item: DataTypes.STRING,
     price: DataTypes.DECIMAL,
-    type:DataTypes.STRING,
+    type: DataTypes.STRING,
     // is_breakfast: DataTypes.BOOLEAN,
     // has_additional: DataTypes.BOOLEAN,
     // has_optional: DataTypes.BOOLEAN,

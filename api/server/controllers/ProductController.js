@@ -19,21 +19,21 @@ class ProductController {
     }
   }
 
-  // static async addProduct(req, res) {
-  //   if (!req.body.name || !req.body.is_alive ) {
-  //     util.setError(400, 'Please provide complete details')
-  //     return util.send(res)
-  //   }
-  //   const newProduct = req.body
-  //   try {
-  //     const createdProduct = await ProductServices.addProduct(newProduct)
-  //     util.setSuccess(201, 'Product Added!', createdProduct)
-  //     return util.send(res)
-  //   } catch (error) {
-  //     util.setError(400, error.message)
-  //     return util.send(res)
-  //   }
-  // }
+  static async addProduct(req, res) {
+    if (!req.body.item || !req.body.price || !req.body.type ) {
+      util.setError(400, 'Please provide complete details')
+      return util.send(res)
+    }
+    const newProduct = req.body
+    try {
+      const createdProduct = await ProductServices.addProduct(newProduct)
+      util.setSuccess(201, 'Product Added!', createdProduct)
+      return util.send(res)
+    } catch (error) {
+      util.setError(400, error.message)
+      return util.send(res)
+    }
+  }
 
   // static async updatedAuthor(req, res) {
   //   const alteredAuthor = req.body
