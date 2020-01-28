@@ -1,106 +1,72 @@
-import ProductServices from '../services/ProductServices'
-import Util from '../utils/Utils'
+import models from '../src/models'
 
-const util = new Util()
-
-class ProductController {
-  static async getAllProducts(req, res) {
-    try {
-      const allProducts = await ProductServices.getAllProducts()
-      if (allProducts.length > 0) {
-        util.setSuccess(200, 'Products retrieved', allProducts)
-      } else {
-        util.setSuccess(200, 'No Products found')
-      }
-      return util.send(res)
-    } catch (error) {
-      util.setError(400, error)
-      return util.send(res)
-    }
+const getAllProducts = async(req, res) => {
+  const allProducts = await models.Menu.findAll({raw:true})
+  if(allProducts.length > 0) {
+    res.send(allProducts) 
+  } else {
+    res.send({message:"No Products found"})
   }
-
-  static async addProduct(req, res) {
-    if (!req.body.item || !req.body.price || !req.body.type ) {
-      util.setError(400, 'Please provide complete details')
-      return util.send(res)
-    }
-    const newProduct = req.body
-    try {
-      const createdProduct = await ProductServices.addProduct(newProduct)
-      util.setSuccess(201, 'Product Added!', createdProduct)
-      return util.send(res)
-    } catch (error) {
-      util.setError(400, error.message)
-      return util.send(res)
-    }
-  }
-
-  // static async updatedAuthor(req, res) {
-  //   const alteredAuthor = req.body
-  //   const { id } = req.params
-  //   if (!Number(id)) {
-  //     util.setError(400, 'Please input a valid numeric value')
-  //     return util.send(res)
-  //   }
-  //   try {
-  //     const updateAuthor = await ProductServices.updateAuthor(id, alteredAuthor)
-  //     if (!updateAuthor) {
-  //       util.setError(404, `Cannot find author with the id: ${id}`)
-  //     } else {
-  //       util.setSuccess(200, 'Author updated', updateAuthor)
-  //     }
-  //     return util.send(res)
-  //   } catch (error) {
-  //     util.setError(404, error)
-  //     return util.send(res)
-  //   }
-  // }
-
-  static async getProduct(req, res) {
-    const { productid } = req.params
-
-    if (!Number(productid)) {
-      util.setError(400, 'Please input a valid numeric value')
-      return util.send(res)
-    } 
-
-    try {
-      const theProduct = await ProductServices.getProduct(productid)
-
-      if (!theProduct) {
-        util.setError(404, `Cannot find Product with the id ${productid}`)
-      } else {
-        util.setSuccess(200, 'Found Product', theProduct)
-      }
-      return util.send(res)
-    } catch (error) {
-      util.setError(404, error)
-      return util.send(res)
-    }
-  }
-
-  // static async deleteAuthor(req, res) {
-  //   const { id } = req.params
-
-  //   if (!Number(id)) {
-  //     util.setError(400, 'Please provide a numeric value')
-  //     return util.send(res)
-  //   }
-
-  //   try {
-  //     const authorToDelete = await ProductServices.deleteAuthor(id)
-
-  //     if (authorToDelete) {
-  //       util.setSuccess(200, 'Author deleted')
-  //     } else {
-  //       util.setError(404, `Author with the id ${id} cannot be found`)
-  //     }
-  //     return util.send(res)
-  //   } catch (error) {
-  //     util.setError(400, error)
-  //     return util.send(res)
-  //   }
-  // }
 }
 
-export default ProductController
+const addProduct = async(req, res) => {
+  if (!req.body.item || !req.body.price || !req.body.type ) {
+    res.send({message:'Please provide complete details'})
+  } else {
+    const newProduct = await models.Menu.create(req.body)
+    res.send({message:'Product Added!', ProductAdded: newProduct})
+  }
+}
+
+const getProduct = async(req, res) => {
+  const { productid } = req.params
+  if (!Number(productid)) {
+    res.send({message:'Please input a valid numeric value'})
+  } else {
+    const theProduct = await models.Menu.findOne({ 
+      where: { id: Number(productid) }
+    })
+    if (!theProduct) {
+      res.send({message:`Cannot find Product with the id ${productid}`})
+    } else {
+      res.send({message:'Found Product!', ProductGet: theProduct})
+    }
+  }
+}
+
+const updatedProduct = async(req, res) => {
+  const alteredProduct = req.body
+  const { productid } = req.params
+  if (!Number(productid)) {
+    res.send({message:'Please input a valid numeric value'})
+  } else {
+    const updateProduct = await models.Menu.findOne({ 
+      where: { id: Number(productid) }
+      })
+    if (!updateProduct) {
+      res.send({message:`Cannot find Product with the id ${productid}`})
+    } else {
+      updateProduct.update(alteredProduct, { where: { id: Number(productid) } })
+      res.send({message:'Product Updated!', ProductUpdated: updateProduct})
+    }
+  }
+}
+
+const deleteProduct = async(req, res) => {
+  const { productid } = req.params
+  if (!Number(productid)) {
+    res.send({message:'Please input a valid numeric value'})
+  } else {
+    const deletedProduct = await models.Menu.findOne({ 
+      where: { id: Number(productid) }
+      })
+    if (!deletedProduct) {
+      res.send({message:`Cannot find Product with the id ${productid}`})
+    } else {
+      deletedProduct.destroy({ where: { id: Number(productid) } })
+      res.send({message:'Product Deleted!', ProductDeleted: deletedProduct})
+    }
+  }
+}
+
+export default { getAllProducts, addProduct , getProduct , updatedProduct , deleteProduct }

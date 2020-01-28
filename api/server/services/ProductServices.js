@@ -1,21 +1,21 @@
-import database from '../src/models'
+// import database from '../src/models'
 
-class ProductsService {
-  static async getAllProducts() {
-    try {
-      return await database.Menu.findAll()
-    } catch (error) {
-      throw error
-    }
-  }
+// class ProductsService {
+//   static async getAllProducts() {
+//     try {
+//       return await database.Menu.findAll()
+//     } catch (error) {
+//       throw error
+//     }
+//   }
 
-  static async addProduct(newProduct) {
-    try {
-      return await database.Menu.create(newProduct)
-    } catch (error) {
-      throw error
-    }
-  }
+//   static async addProduct(newProduct) {
+//     try {
+//       return await database.Menu.create(newProduct)
+//     } catch (error) {
+//       throw error
+//     }
+//   }
 
   // static async updateAuthor(id, updateAuthor) {
   //   try {
@@ -34,17 +34,17 @@ class ProductsService {
   //   }
   // }
 
-  static async getProduct(id) {
-    try {
-      const theProduct = await database.Menu.findOne({
-        where: { id: Number(id) }
-      })
+  // static async getProduct(id) {
+  //   try {
+  //     const theProduct = await database.Menu.findOne({
+  //       where: { id: Number(id) }
+  //     })
 
-      return theProduct
-    } catch (error) {
-      throw error
-    }
-  }
+  //     return theProduct
+  //   } catch (error) {
+  //     throw error
+  //   }
+  // }
 
   // static async deleteAuthor(id) {
   //   try {
@@ -61,6 +61,6 @@ class ProductsService {
   //     throw error
   //   }
   // }
-}
+// }
 
-export default ProductsService
+// export default ProductsService
