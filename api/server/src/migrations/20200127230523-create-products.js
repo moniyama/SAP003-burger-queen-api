@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Menus', {
+    return queryInterface.createTable('Products', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,29 +9,17 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       item: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       price: {
+        allowNull: false,
         type: Sequelize.DECIMAL
       },
       type: {
+        allowNull: false,
         type: Sequelize.STRING
       },
-      // is_breakfast: {
-      //   type: Sequelize.BOOLEAN
-      // },
-      // has_additional: {
-      //   type: Sequelize.BOOLEAN
-      // },
-      // has_optional: {
-      //   type: Sequelize.BOOLEAN
-      // },
-      // additional: {
-      //   type: Sequelize.ENUM
-      // },
-      // optional: {
-      //   type: Sequelize.ENUM
-      // },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -43,6 +31,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Menus');
+    return queryInterface.dropTable('Products');
   }
 };
