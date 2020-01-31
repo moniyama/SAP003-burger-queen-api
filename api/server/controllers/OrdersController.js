@@ -12,7 +12,7 @@ const getAllOrders = async(req, res) => {
 }
 
 const addOrders = async(req, res) => {
-  if (!req.body.item || !req.body.price || !req.body.type ) {
+  if (!req.body.clientName || !req.body.tableNumber || !req.body.is_delivered || !req.body.is_cooked ) {
     res.json({message:'Please provide complete details'})
   } else {
     const newOrders = await models.Orders.create(req.body)
@@ -48,6 +48,7 @@ const updatedOrders = async(req, res) => {
     if (!updateOrders) {
       res.json({message:`Cannot find Order with the id ${orderid}`})
     } else {
+      console.log(updateOrders)
       updateOrders.update(alteredOrders, { where: { id: Number(orderid) } })
       res.json({message:'Orders Updated!', OrdersUpdated: updateOrders})
     }

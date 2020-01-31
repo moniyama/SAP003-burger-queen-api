@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     item: DataTypes.STRING,
     price: DataTypes.DECIMAL,
     type: DataTypes.STRING,
-    is_additional: DataTypes.BOOLEAN
+    is_additional: DataTypes.BOOLEAN,
   }, {});
 
   Products.associate = function(models) {
