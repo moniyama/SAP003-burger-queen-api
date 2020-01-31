@@ -4,9 +4,9 @@ module.exports = (sequelize, DataTypes) => {
     item: DataTypes.STRING,
     price: DataTypes.DECIMAL,
     type: DataTypes.STRING,
+    options: DataTypes.BOOLEAN,
+    additional: DataTypes.BOOLEAN
   }, {});
-  Products.associate = function(models) {
-    // Products.belongsTo(models.Orders)
-  };
+
   return Products;
 };
