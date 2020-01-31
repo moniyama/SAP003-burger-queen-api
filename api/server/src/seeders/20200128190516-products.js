@@ -9,8 +9,7 @@ module.exports = {
         item: 'Café americano',
         price: 5,
         type: 'café da manhã',
-        options: false,
-        additional: false,
+        is_additional: false,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -18,8 +17,7 @@ module.exports = {
         item: 'Hambúrguer simples',
         price: 10,
         type: 'hamburguer',
-        options: true,
-        additional: true,
+        is_additional: false,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -27,8 +25,7 @@ module.exports = {
         item: 'Batata frita',
         price: 5,
         type: 'acompanhamento',
-        options: false,
-        additional: false,
+        is_additional: false,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -36,8 +33,15 @@ module.exports = {
         item: 'Refrigerante 750mL',
         price: 10,
         type: 'bebida',
-        options: false,
-        additional: false,
+        is_additional: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        item: 'ovo',
+        price: 1,
+        type: 'adicional',
+        is_additional: true,
         createdAt: new Date(),
         updatedAt: new Date()
       }

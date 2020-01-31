@@ -4,9 +4,10 @@ module.exports = (sequelize, DataTypes) => {
     option: DataTypes.STRING,
     qtd: DataTypes.INTEGER
   }, {});
+  
   ItensOrder.associate = function(models) {
     ItensOrder.belongsTo(models.Products)
-    ItensOrder.hasMany(models.Orders)
+    ItensOrder.belongsTo(models.Orders)
     };
   return ItensOrder;
 };

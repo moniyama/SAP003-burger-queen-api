@@ -20,11 +20,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      options: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN
-      },
-      additional: {
+      is_additional: {
         allowNull: false,
         type: Sequelize.BOOLEAN
       },
