@@ -1,76 +1,93 @@
-import models from '../src/models'
+import models from "../src/models";
 
-// res.send x res.json
-
-const getAllOrders = async(req, res) => {
-  const allOrders = await models.Orders.findAll({raw:true})
-  if(allOrders.length > 0) {
-    res.json(allOrders) 
+const getAllOrders = async (req, res) => {
+  const orderItens = await models.ItensOrder.findAll({
+    where: { orderId: id }
+  });
+  const allOrders = await models.Orders.findAll({
+    raw: true,
+    itens: orderItens 
+  });
+  if (allOrders.length > 0) {
+    res.json((orders = { message: "Orders Found!", allOrders: allOrders }));
   } else {
-    res.json({message:"No Order found"})
+    res.json((orders = { message: "No Order found" }));
   }
-}
+};
 
-const addOrders = async(req, res) => {
-  if (!req.body.clientName || !req.body.tableNumber || !req.body.is_delivered || !req.body.is_cooked ) {
-    res.json({message:'Please provide complete details'})
+const addOrders = async (req, res) => {
+  if (
+    !req.body.clientName ||
+    !req.body.tableNumber ||
+    !req.body.is_delivered ||
+    !req.body.is_cooked
+  ) {
+    res.json((orders = { message: "Please provide complete details" }));
   } else {
-    const newOrders = await models.Orders.create(req.body)
-    res.json({message:'Order Added!', OrdersAdded: newOrders})
+    const newOrder = await models.Orders.create(req.body);
+    res.json((orders = { message: "Order Added!", orderAdded: newOrder }));
   }
-}
+};
 
-const getOrders = async(req, res) => {
-  const { orderid } = req.params
+const getOrders = async (req, res) => {
+  const { orderid } = req.params;
   if (!Number(orderid)) {
-    res.json({message:'Please input a valid numeric value'})
+    res.json({ message: "Please input a valid numeric value" });
   } else {
-    const theOrders = await models.Orders.findOne({ 
+    const theOrder = await models.Orders.findOne({
       where: { id: Number(orderid) }
-    })
-    if (!theOrders) {
-      res.json({message:`Cannot find Orders with the id ${orderid}`})
+    });
+    if (!theOrder) {
+      res.json(
+        (orders = { message: `Cannot find Orders with the id ${orderid}` })
+      );
     } else {
-      res.json({message:'Found Order!', OrdersGet: theOrders})
+      const orderItens = await models.ItensOrder.findAll({
+        where: { orderId: orderid }
+      });
+      res.json((orders = { message: "Found Order!", theOrder: theOrder, itens: orderItens }));
     }
   }
-}
+};
 
-const updatedOrders = async(req, res) => {
-  const alteredOrders = req.body
-  const { orderid } = req.params
+const updatedOrders = async (req, res) => {
+  const alteredOrders = req.body;
+  const { orderid } = req.params;
   if (!Number(orderid)) {
-    res.json({message:'Please input a valid numeric value'})
+    res.json((orders = { message: "Please input a valid numeric value" }));
   } else {
-    const updateOrders = await models.Orders.findOne({ 
+    const updateOrders = await models.Orders.findOne({
       where: { id: Number(orderid) }
-      })
+    });
     if (!updateOrders) {
-      res.json({message:`Cannot find Order with the id ${orderid}`})
+      res.json(
+        (orders = { message: `Cannot find Order with the id ${orderid}` })
+      );
     } else {
-      console.log(updateOrders)
-      updateOrders.update(alteredOrders, { where: { id: Number(orderid) } })
-      res.json({message:'Orders Updated!', OrdersUpdated: updateOrders})
+      updateOrders.update(alteredOrders, { where: { id: Number(orderid) } });
+      res.json(
+        (orders = { message: "Orders Updated!", ordersUpdated: updateOrders })
+      );
     }
   }
-}
+};
 
-const deleteOrders = async(req, res) => {
-  const { orderid } = req.params
+const deleteOrders = async (req, res) => {
+  const { orderid } = req.params;
   if (!Number(orderid)) {
-    res.json({message:'Please input a valid numeric value'})
+    res.json({ message: "Please input a valid numeric value" });
   } else {
-    const deletedOrders = await models.Orders.findOne({ 
+    const deletedOrders = await models.Orders.findOne({
       where: { id: Number(orderid) }
-      })
+    });
     if (!deletedOrders) {
-      res.json({message:`Cannot find Order with the id ${orderid}`})
+      res.json({ message: `Cannot find Order with the id ${orderid}` });
     } else {
-      deletedOrders.destroy({ where: { id: Number(orderid) } })
-      res.json({message:'Order Deleted!', OrdersDeleted: deletedOrders})
+      deletedOrders.destroy({ where: { id: Number(orderid) } });
+      res.json({ message: "Order Deleted!", ordersDeleted: deletedOrders });
     }
   }
-}
+};
 
 export default {
   getAllOrders,
@@ -78,4 +95,4 @@ export default {
   getOrders,
   updatedOrders,
   deleteOrders
-}
+};
