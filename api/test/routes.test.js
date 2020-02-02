@@ -1,52 +1,119 @@
-import request from 'supertest';
-import app from '../index';
+import request from "supertest";
+import app from "../index";
 
-describe('Testing Sucess Endpoints of Products', () => {
-  it('Testing to see if Jest works', () => {
-    expect(1).toBe(1)
-  }),
-  
-  it('should fetch all five products', async () => {
-    const res = await request(app).get('/products')
-    expect(res.statusCode).toEqual(200)
-    expect(res.body).toHaveLength(5)
-  }),
-
-  it('should fetch one product', async () => {
-    const res = await request(app).get('/products/3')
-    expect(res.statusCode).toEqual(200)
-    expect(res.body).toHaveProperty('message', "Found Product!")
-  })
-
-  
-  it('should create a new product', async () => {
-    const res = await request(app)
-    .post('/products')
-    .send({
-      item: "Água 500mL",
-      price: 5,
-      type: 'bebidas',
-      is_additional: false
-    })
-    expect(res.statusCode).toEqual(200)
-    expect(res.body).toHaveProperty('message','Product Added!')
-  })
-  
-  
-  it('should update a post', async () => {
-    const res = await request(app)
-    .put('/products/2')
-    .send({
-      item: 'updated item',
-    });
-    expect(res.statusCode).toEqual(200)
-    expect(res.body).toHaveProperty('message', 'Product Updated!')
+describe("Testing Sucess Requests of Products", () => {
+  it("should fetch all five products", async () => {
+    const res = await request(app).get("/products");
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveLength(5);
   });
-  
-  // it('should delete a post', async () => {
-  //   const res = await request(app).delete('products/1')
-  //   expect(res.statusCode).toEqual(204)
-  //   expect(res.body).toHaveProperty('message', 'Product Deleted!')
 
-  // });
-})
+  it("should fetch one product", async () => {
+    const res = await request(app).get("/products/3");
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty("message", "Found Product!");
+  });
+
+  it("should create a new product", async () => {
+    const res = await request(app)
+      .post("/products")
+      .send({
+        item: "Água 500mL",
+        price: 5,
+        type: "bebidas",
+        is_additional: false
+      });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty("message", "Product Added!");
+  });
+
+  it("should update a post", async () => {
+    const res = await request(app)
+      .put("/products/2")
+      .send({
+        item: "updated item"
+      });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty("message", "Product Updated!");
+  });
+
+  it("should delete a post", async () => {
+    await request(app).delete("products/1");
+    const res = await request(app).get("products/1");
+    expect(res.statusCode).toEqual(204);
+    expect(res.body).toHaveProperty("message", "Product Deleted!");
+  });
+});
+
+describe("Testing Failures Endpoints of Products", () => {
+  it("should not find a product on get", async () => {
+    const res = await request(app).get("/products/30");
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toHaveProperty("message", "Cannot find Product");
+  });
+
+  it("should not find a product on put", async () => {
+    const res = await request(app).put("/products/20");
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toHaveProperty("message", "Cannot find Product");
+  });
+
+  it("should not find a product on delete", async () => {
+    const res = await request(app).delete("/products/20");
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toHaveProperty("message", "Cannot find Product");
+  });
+
+  it("should ask for a valid numeric value on put", async () => {
+    const res = await request(app).put("/products/test");
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toHaveProperty(
+      "message",
+      "Please input a valid numeric value"
+    );
+  });
+
+  it("should ask for a valid numeric value on delete", async () => {
+    const res = await request(app).delete("/products/test");
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toHaveProperty(
+      "message",
+      "Please input a valid numeric value"
+    );
+  });
+
+  it("should ask for a valid numeric value on get", async () => {
+    const res = await request(app).get("/products/test");
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toHaveProperty(
+      "message",
+      "Please input a valid numeric value"
+    );
+  });
+
+  it("should ask for more details", async () => {
+    const res = await request(app)
+      .post("/products")
+      .send({
+        item: "Água 500mL",
+        price: 5
+      });
+    expect(res.statusCode).toEqual(401);
+    expect(res.body).toHaveProperty(
+      "message",
+      "Please provide complete details"
+    );
+  });
+
+  it("should not find products", async () => {
+    request(app).delete("/products/1");
+    request(app).delete("/products/2");
+    request(app).delete("/products/3");
+    request(app).delete("/products/4");
+    request(app).delete("/products/5");
+    const res = request(app).get("/products");
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toHaveLength(0);
+    expect(res.body).toHaveProperty("message", "No Products found");
+  });
+});
