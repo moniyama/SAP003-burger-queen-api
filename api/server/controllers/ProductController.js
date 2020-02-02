@@ -5,33 +5,33 @@ import models from '../src/models'
 const getAllProducts = async(req, res) => {
   const allProducts = await models.Products.findAll({raw:true})
   if(allProducts.length > 0) {
-    res.json(allProducts) 
+    res.json(products = {  message:"Products Found!", allProducts = allProducts }) 
   } else {
-    res.json({message:"No Products found"})
+    res.json(products = {message:"No Products found"})
   }
 }
 
 const addProduct = async(req, res) => {
   if (!req.body.item || !req.body.price || !req.body.type ) {
-    res.json({message:'Please provide complete details'})
+    res.json(products = {message:'Please provide complete details'})
   } else {
     const newProduct = await models.Products.create(req.body)
-    res.json({message:'Product Added!', ProductAdded: newProduct})
+    res.json(products = {message:'Product Added!', productAdded: newProduct})
   }
 }
 
 const getProduct = async(req, res) => {
   const { productid } = req.params
   if (!Number(productid)) {
-    res.json({message:'Please input a valid numeric value'})
+    res.json(products = {message:'Please input a valid numeric value'})
   } else {
     const theProduct = await models.Products.findOne({ 
       where: { id: Number(productid) }
     })
     if (!theProduct) {
-      res.json({message:`Cannot find Product with the id ${productid}`})
+      res.json(products = {message:`Cannot find Product with the id ${productid}`})
     } else {
-      res.json({message:'Found Product!', ProductGet: theProduct})
+      res.json(products = {message:'Found Product!', theProduct: theProduct})
     }
   }
 }
@@ -40,16 +40,16 @@ const updatedProduct = async(req, res) => {
   const alteredProduct = req.body
   const { productid } = req.params
   if (!Number(productid)) {
-    res.json({message:'Please input a valid numeric value'})
+    res.json(products = {message:'Please input a valid numeric value'})
   } else {
     const updateProduct = await models.Products.findOne({ 
       where: { id: Number(productid) }
       })
     if (!updateProduct) {
-      res.json({message:`Cannot find Product with the id ${productid}`})
+      res.json(products = {message:`Cannot find Product with the id ${productid}`})
     } else {
       updateProduct.update(alteredProduct, { where: { id: Number(productid) } })
-      res.json({message:'Product Updated!', ProductUpdated: updateProduct})
+      res.json(products = {message:'Product Updated!', productUpdated: updateProduct})
     }
   }
 }
@@ -57,16 +57,16 @@ const updatedProduct = async(req, res) => {
 const deleteProduct = async(req, res) => {
   const { productid } = req.params
   if (!Number(productid)) {
-    res.json({message:'Please input a valid numeric value'})
+    res.json(products = {message:'Please input a valid numeric value'})
   } else {
     const deletedProduct = await models.Products.findOne({ 
       where: { id: Number(productid) }
       })
     if (!deletedProduct) {
-      res.json({message:`Cannot find Product with the id ${productid}`})
+      res.json(products = {message:`Cannot find Product with the id ${productid}`})
     } else {
       deletedProduct.destroy({ where: { id: Number(productid) } })
-      res.json({message:'Product Deleted!', ProductDeleted: deletedProduct})
+      res.json(products = {message:'Product Deleted!', productDeleted: deletedProduct})
     }
   }
 }
