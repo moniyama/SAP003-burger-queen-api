@@ -48,7 +48,6 @@ const updatedOrders = async(req, res) => {
     if (!updateOrders) {
       res.json({message:`Cannot find Order with the id ${orderid}`})
     } else {
-      console.log(updateOrders)
       updateOrders.update(alteredOrders, { where: { id: Number(orderid) } })
       res.json({message:'Orders Updated!', OrdersUpdated: updateOrders})
     }
