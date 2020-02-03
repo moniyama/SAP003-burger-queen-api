@@ -36,37 +36,30 @@ describe("Testing Sucess Requests of Products", () => {
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty("message", "Product Updated!");
   });
-
-  it("should delete a post", async () => {
-    await request(app).delete("products/1");
-    const res = await request(app).get("products/1");
-    expect(res.statusCode).toEqual(204);
-    expect(res.body).toHaveProperty("message", "Product Deleted!");
-  });
 });
 
 describe("Testing Failures Endpoints of Products", () => {
   it("should not find a product on get", async () => {
     const res = await request(app).get("/products/30");
-    expect(res.statusCode).toEqual(404);
-    expect(res.body).toHaveProperty("message", "Cannot find Product");
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty("message", "Cannot find Product with the id 30");
   });
 
   it("should not find a product on put", async () => {
     const res = await request(app).put("/products/20");
-    expect(res.statusCode).toEqual(404);
-    expect(res.body).toHaveProperty("message", "Cannot find Product");
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty("message", "Cannot find Product with the id 20");
   });
 
   it("should not find a product on delete", async () => {
     const res = await request(app).delete("/products/20");
-    expect(res.statusCode).toEqual(404);
-    expect(res.body).toHaveProperty("message", "Cannot find Product");
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty("message", "Cannot find Product with the id 20");
   });
 
   it("should ask for a valid numeric value on put", async () => {
     const res = await request(app).put("/products/test");
-    expect(res.statusCode).toEqual(404);
+    expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty(
       "message",
       "Please input a valid numeric value"
@@ -75,7 +68,7 @@ describe("Testing Failures Endpoints of Products", () => {
 
   it("should ask for a valid numeric value on delete", async () => {
     const res = await request(app).delete("/products/test");
-    expect(res.statusCode).toEqual(404);
+    expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty(
       "message",
       "Please input a valid numeric value"
@@ -84,7 +77,7 @@ describe("Testing Failures Endpoints of Products", () => {
 
   it("should ask for a valid numeric value on get", async () => {
     const res = await request(app).get("/products/test");
-    expect(res.statusCode).toEqual(404);
+    expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty(
       "message",
       "Please input a valid numeric value"
@@ -98,22 +91,11 @@ describe("Testing Failures Endpoints of Products", () => {
         item: "Água 500mL",
         price: 5
       });
-    expect(res.statusCode).toEqual(401);
+    expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty(
       "message",
       "Please provide complete details"
     );
   });
 
-  it("should not find products", async () => {
-    request(app).delete("/products/1");
-    request(app).delete("/products/2");
-    request(app).delete("/products/3");
-    request(app).delete("/products/4");
-    request(app).delete("/products/5");
-    const res = request(app).get("/products");
-    expect(res.statusCode).toEqual(404);
-    expect(res.body).toHaveLength(0);
-    expect(res.body).toHaveProperty("message", "No Products found");
-  });
 });
